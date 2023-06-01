@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQueryWithAuth } from "./baseQueryWithAuth";
+import { baseQueryWithReauth } from "./baseQueryWithAuth";
 import { setUser } from "../features/userSlice";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: baseQueryWithAuth,
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     registerUser: builder.mutation<
       { accessToken: string; refreshToken: string },
@@ -12,7 +12,7 @@ export const authApi = createApi({
     >({
       query(data) {
         return {
-          url: "register",
+          url: "auth/register",
           method: "POST",
           body: data,
         };
@@ -86,29 +86,29 @@ export const authApi = createApi({
         }
       },
     }),
-    generateToken: builder.mutation<
-      { accessToken: string; refreshToken: string },
-      void
-    >({
-      query() {
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (!refreshToken) throw new Error("No refresh token");
-        return {
-          url: "auth/refresh-token",
-          method: "POST",
-          body: { refreshToken },
-        };
-      },
-      async onQueryStarted(_args, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          localStorage.setItem("accessToken", data.accessToken);
-          localStorage.setItem("refreshToken", data.refreshToken);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    }),
+    //   generateToken: builder.mutation<
+    //     { accessToken: string; refreshToken: string },
+    //     void
+    //   >({
+    //     query() {
+    //       const refreshToken = localStorage.getItem("refreshToken");
+    //       if (!refreshToken) throw new Error("No refresh token");
+    //       return {
+    //         url: "auth/refresh-token",
+    //         method: "POST",
+    //         body: { refreshToken },
+    //       };
+    //     },
+    //     async onQueryStarted(_args, { queryFulfilled }) {
+    //       try {
+    //         const { data } = await queryFulfilled;
+    //         localStorage.setItem("accessToken", data.accessToken);
+    //         localStorage.setItem("refreshToken", data.refreshToken);
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //     },
+    //   }),
   }),
 });
 
@@ -117,5 +117,5 @@ export const {
   useRegisterUserMutation,
   useLogoutUserMutation,
   useWhoamiQuery,
-  useGenerateTokenMutation,
+  // useGenerateTokenMutation,
 } = authApi;
