@@ -2,6 +2,8 @@ import { Button, Checkbox, Table, Tag, Typography } from "antd";
 import { Word } from "../../redux/api/types";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
+import { useLearnWordMutation } from "../../redux/api/wordApi";
+import { toast } from "react-toastify";
 
 type Props = {
   data: Word[];
@@ -13,7 +15,9 @@ const columns: ColumnsType<Word> = [
     dataIndex: "word",
     key: "word",
     render: (word: string) => (
-      <Typography.Title level={5}>{word}</Typography.Title>
+      <Typography.Title ellipsis level={5}>
+        {word}
+      </Typography.Title>
     ),
   },
   {
@@ -21,7 +25,7 @@ const columns: ColumnsType<Word> = [
     dataIndex: "ipa",
     key: "ipa",
     render: (ipa: string) => (
-      <Typography.Text keyboard strong style={{ fontSize: "1rem" }}>
+      <Typography.Text ellipsis keyboard strong style={{ fontSize: "1rem" }}>
         {ipa}
       </Typography.Text>
     ),
@@ -91,6 +95,16 @@ const ignoreModeColumns: ColumnsType<Word> = [
 
 const WordList = ({ data }: Props) => {
   const [ignoreMode, setIgnoreMode] = useState(false);
+  const [learned] = useLearnWordMutation();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const handleOnSave = () => {
+    toast.promise(learned({ wordId: selectedRowKeys as number[] }), {
+      pending: "Saving... 🚀",
+      success: "Saved successfully 🎉",
+      error: "Something went wrong 😢",
+    });
+    setIgnoreMode(false);
+  };
 
   return (
     <Table
@@ -104,7 +118,8 @@ const WordList = ({ data }: Props) => {
                 italic
                 style={{ fontSize: 24 }}
               >
-                if you already know this word, you can ignore it !!
+                if you already know this word, you can ignore it !~ 😊 it
+                consider is learned
               </Typography.Text>
               <Button type="primary" danger onClick={() => setIgnoreMode(true)}>
                 Ignore
@@ -124,30 +139,33 @@ const WordList = ({ data }: Props) => {
               >
                 Cancel
               </Button>
-              <Button type="primary" onClick={() => setIgnoreMode(false)}>
+              <Button
+                type="primary"
+                onClick={() => handleOnSave()}
+                disabled={selectedRowKeys.length === 0}
+              >
                 Save
               </Button>
             </>
           )}
         </div>
       )}
-      dataSource={
-        ignoreMode
-          ? data
-              .filter((word) => !word.learned)
-              .map((word) => ({ ...word, ignore: false }))
-          : data
-      }
+      dataSource={data}
       columns={ignoreMode ? ignoreModeColumns : columns}
       rowKey={(record) => record.id}
       rowSelection={
         ignoreMode
           ? {
               type: "checkbox",
-              onChange: (selectedRowKeys, selectedRows) => {
-                console.log(selectedRowKeys, selectedRows);
+              onChange: (selectedRowKeys) => {
+                setSelectedRowKeys(selectedRowKeys);
               },
               columnWidth: 100,
+              getCheckboxProps(record) {
+                return {
+                  disabled: record.learned,
+                };
+              },
             }
           : undefined
       }

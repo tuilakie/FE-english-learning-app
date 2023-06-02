@@ -98,6 +98,7 @@ const CoursePage = () => {
                     }}
                     status="active"
                     trailColor="lightgray"
+                    style={{ padding: "0 15px" }}
                   />
                 }
               />

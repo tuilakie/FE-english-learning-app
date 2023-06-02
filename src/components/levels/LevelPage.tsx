@@ -6,6 +6,8 @@ import { useAppDispatch } from "../../redux/hook";
 import { useEffect } from "react";
 import { addBreadcrumbs } from "../../redux/features/breadcrumbSlice";
 import WordList from "./WordList";
+import { useResetLearnedMutation } from "../../redux/api/wordApi";
+import { toast } from "react-toastify";
 const { Meta } = Card;
 const LevelPage = () => {
   const { levelId, courseId } = useParams() as {
@@ -17,6 +19,8 @@ const LevelPage = () => {
     isLoading: levelLoading,
     isFetching: levelFetching,
   } = useGetLevelQuery({ courseId, levelId });
+
+  const [resetLearned] = useResetLearnedMutation();
 
   const dispatch = useAppDispatch();
 
@@ -64,13 +68,34 @@ const LevelPage = () => {
               <Typography.Title type="success" level={5}>
                 {progess}/{levelData?._count?.words} words learned
               </Typography.Title>
-              <Button type="primary">
-                {`Learn ${
-                  levelData?._count?.words && progess !== undefined
-                    ? levelData?._count?.words - progess
-                    : ""
-                } words`}
-              </Button>
+              <Space>
+                <Button type="primary">
+                  {`Learn ${
+                    levelData?._count?.words && progess !== undefined
+                      ? levelData?._count?.words - progess
+                      : ""
+                  } words`}
+                </Button>
+                {progess && (
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "rosybrown",
+                      borderColor: "rosybrown",
+                    }}
+                    onClick={() => {
+                      if (!levelId) return;
+                      toast.promise(resetLearned(+levelId), {
+                        pending: "Resetting... 🚀",
+                        success: "Reset successfully 🎉",
+                        error: "Something went wrong 😢",
+                      });
+                    }}
+                  >
+                    {`Reset ${progess} words learned`}
+                  </Button>
+                )}
+              </Space>
             </div>
           }
         />

@@ -5,12 +5,14 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { courseApi } from "./api/courseApi";
 import { levelApi } from "./api/levelApi";
 import { breadcrumbSlice } from "./features/breadcrumbSlice";
+import { wordApi } from "./api/wordApi";
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
     [levelApi.reducerPath]: levelApi.reducer,
+    [wordApi.reducerPath]: wordApi.reducer,
     userState: userSlice.reducer,
     breadcrumbState: breadcrumbSlice.reducer,
   },
@@ -20,6 +22,7 @@ export const store = configureStore({
       authApi.middleware,
       courseApi.middleware,
       levelApi.middleware,
+      wordApi.middleware,
     ]),
 });
 
