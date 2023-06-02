@@ -2,6 +2,7 @@ import { Card, Progress, Space, Typography } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 const { Meta } = Card;
 import { useNavigate } from "react-router-dom";
+import { blue } from "@ant-design/colors";
 
 type Props = {
   id: string;
@@ -18,6 +19,7 @@ const CourseCard = ({ id, name, progress, total }: Props) => {
       style={{ width: 600 }}
       actions={[
         <EditOutlined
+          title="Start learning"
           key="learning"
           onClick={() => {
             navigate(`/courses/${id}`);
@@ -56,12 +58,18 @@ const CourseCard = ({ id, name, progress, total }: Props) => {
               {" "}
               {progress ? `${progress} / ${total} items` : "Not started"}
             </Typography.Title>
+
             <Progress
               size={[500, 20]}
               percent={Number(
                 (total && progress ? (progress / total) * 100 : 0).toFixed(2)
               )}
+              strokeColor={{
+                from: blue[2],
+                to: blue[4],
+              }}
               status="active"
+              trailColor="lightgray"
             />
           </Space>
         }

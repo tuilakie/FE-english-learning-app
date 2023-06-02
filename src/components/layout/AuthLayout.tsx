@@ -87,16 +87,17 @@ export const AuthLayout = () => {
       <Footer
         style={{ textAlign: "center", fontSize: "16px", fontWeight: 600 }}
       >
-        ©2023 Created by{" "}
-        <span
+        English Learning App©2023 Created by{" "}
+        <a
           style={{
             color: "#1890ff",
             cursor: "pointer",
             textDecoration: "underline",
           }}
+          href="https://www.github.com/tuilakie"
         >
-          tuilakie
-        </span>
+          .tuilakie
+        </a>
       </Footer>
     </Layout>
   );

@@ -16,3 +16,24 @@ export type Level = {
     learned: number;
   };
 };
+
+export type Word = {
+  courseId: string;
+  levelId: string;
+  id: string;
+  ipa: string;
+  word: string;
+  meaning: string;
+  sub: string;
+  learned?: boolean;
+};
+
+export type LevelDetail = {
+  id: string;
+  name: string;
+  courseId: string;
+  _count: {
+    words: number;
+  };
+  words: Word[];
+};

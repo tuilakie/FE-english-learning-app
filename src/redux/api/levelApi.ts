@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./baseQueryWithAuth";
-import { Level } from "./types";
+import { Level, LevelDetail } from "./types";
 
 export const levelApi = createApi({
   reducerPath: "levelApi",
@@ -12,7 +12,15 @@ export const levelApi = createApi({
         method: "GET",
       }),
     }),
+    getLevel: builder.query<LevelDetail, { courseId: string; levelId: string }>(
+      {
+        query: ({ courseId, levelId }) => ({
+          url: `course/${courseId}/level/${levelId}`,
+          method: "GET",
+        }),
+      }
+    ),
   }),
 });
 
-export const { useGetLevelsQuery } = levelApi;
+export const { useGetLevelsQuery, useGetLevelQuery } = levelApi;
