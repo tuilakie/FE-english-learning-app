@@ -1,9 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQueryWithReauth } from "./baseQueryWithAuth";
+import { baseApi } from "./baseApi";
 
-export const wordApi = createApi({
-  reducerPath: " wordApi",
-  baseQuery: baseQueryWithReauth,
+export const wordApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     learnWord: builder.mutation<
       { _count: { words: number } },
@@ -16,12 +13,20 @@ export const wordApi = createApi({
           wordId,
         },
       }),
+      invalidatesTags: [
+        { type: "Levels", id: "LIST" },
+        { type: "Courses", id: "LIST" },
+      ],
     }),
     resetLearned: builder.mutation<{ _count: { words: number } }, number>({
       query: (levelId) => ({
         url: `word/reset-learned/${levelId}`,
         method: "POST",
       }),
+      invalidatesTags: [
+        { type: "Levels", id: "LIST" },
+        { type: "Courses", id: "LIST" },
+      ],
     }),
   }),
 });

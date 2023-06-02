@@ -1,10 +1,7 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQueryWithReauth } from "./baseQueryWithAuth";
+import { baseApi } from "./baseApi";
 import { Course } from "./types";
 
-export const courseApi = createApi({
-  reducerPath: "courseApi",
-  baseQuery: baseQueryWithReauth,
+export const courseApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     courses: builder.query<Course[], void>({
       query() {
@@ -13,6 +10,13 @@ export const courseApi = createApi({
           method: "GET",
         };
       },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Courses" as const, id })),
+              { type: "Courses", id: "LIST" },
+            ]
+          : [{ type: "Courses", id: "LIST" }],
     }),
     course: builder.query<Course, string>({
       query(id) {
@@ -21,6 +25,10 @@ export const courseApi = createApi({
           method: "GET",
         };
       },
+      providesTags: (_result, _error, id) => [
+        { type: "Courses", id },
+        { type: "Courses", id: "LIST" },
+      ],
     }),
   }),
 });

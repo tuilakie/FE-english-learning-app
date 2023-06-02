@@ -1,4 +1,4 @@
-import { Button, Checkbox, Table, Tag, Typography } from "antd";
+import { Button, Table, Tag, Typography } from "antd";
 import { Word } from "../../redux/api/types";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -151,6 +151,7 @@ const WordList = ({ data }: Props) => {
         </div>
       )}
       dataSource={data}
+      loading={!data}
       columns={ignoreMode ? ignoreModeColumns : columns}
       rowKey={(record) => record.id}
       rowSelection={

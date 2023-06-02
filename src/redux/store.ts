@@ -6,6 +6,7 @@ import { courseApi } from "./api/courseApi";
 import { levelApi } from "./api/levelApi";
 import { breadcrumbSlice } from "./features/breadcrumbSlice";
 import { wordApi } from "./api/wordApi";
+import { baseApi } from "./api/baseApi";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV === "development",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({}).concat([
+      baseApi.middleware,
       authApi.middleware,
       courseApi.middleware,
       levelApi.middleware,
