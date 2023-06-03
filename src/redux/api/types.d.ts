@@ -1,3 +1,6 @@
+import { CaseStudies } from "./types.d";
+import { Word } from "@prisma/client";
+
 export type Course = {
   id: string;
   name: string;
@@ -36,4 +39,22 @@ export type LevelDetail = {
     words: number;
   };
   words: Word[];
+};
+
+export type CaseStudies = {
+  words: Word[];
+  questions: Questions[];
+  meta: Meta;
+};
+
+export type Questions = {
+  word: Word;
+  options: Word[] | string[];
+  _type: "fill" | "select_word" | "select_meaning";
+};
+
+export type Meta = {
+  total: number;
+  skip: number;
+  take: number;
 };

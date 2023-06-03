@@ -1,3 +1,4 @@
+import { caseStudySlice } from "./features/caseStudySlice";
 import { userSlice } from "./features/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./api/authApi";
@@ -16,6 +17,7 @@ export const store = configureStore({
     [wordApi.reducerPath]: wordApi.reducer,
     userState: userSlice.reducer,
     breadcrumbState: breadcrumbSlice.reducer,
+    caseStudySlice: caseStudySlice.reducer,
   },
   devTools: process.env.NODE_ENV === "development",
   middleware: (getDefaultMiddleware) =>

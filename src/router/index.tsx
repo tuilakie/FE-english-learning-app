@@ -7,6 +7,7 @@ import Dashboard from "../components/dashboard/Dashboard";
 import CoursePage from "../components/courses/CoursePage";
 import LevelList from "../components/courses/LevelList";
 import LevelPage from "../components/levels/LevelPage";
+import LearningPage from "../components/learning/LearningPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           {
             path: "/profile",
             element: <h1>Profile</h1>,
+          },
+          {
+            path: "/learning/:courseId/:levelId",
+            element: <LearningPage />,
           },
           {
             path: "/courses/:courseId",

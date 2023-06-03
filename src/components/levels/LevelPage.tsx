@@ -1,5 +1,5 @@
 import { Button, Card, Space, Typography } from "antd";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetLevelQuery } from "../../redux/api/levelApi";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../redux/hook";
@@ -23,6 +23,7 @@ const LevelPage = () => {
   const [resetLearned] = useResetLearnedMutation();
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const breadcrumb = [
@@ -69,7 +70,12 @@ const LevelPage = () => {
                 {progess}/{levelData?._count?.words} words learned
               </Typography.Title>
               <Space>
-                <Button type="primary">
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    navigate(`/learning/${courseId}/${levelId}`);
+                  }}
+                >
                   {`Learn ${
                     levelData?._count?.words && progess !== undefined
                       ? levelData?._count?.words - progess
