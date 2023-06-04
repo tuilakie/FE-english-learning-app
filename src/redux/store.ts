@@ -1,3 +1,4 @@
+import { quizSlice } from "./features/quizzesSlice";
 import { caseStudySlice } from "./features/caseStudySlice";
 import { userSlice } from "./features/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -18,6 +19,7 @@ export const store = configureStore({
     userState: userSlice.reducer,
     breadcrumbState: breadcrumbSlice.reducer,
     caseStudySlice: caseStudySlice.reducer,
+    quizSlice: quizSlice.reducer,
   },
   devTools: process.env.NODE_ENV === "development",
   middleware: (getDefaultMiddleware) =>

@@ -1,20 +1,23 @@
 import { Button, Card, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { handleSpeak } from "./handleSpeak";
+import { handleSpeak } from "../learning/handleSpeak";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import {
-  pushWord,
-  removeQuestion,
-  swapQuestion,
-} from "../../redux/features/caseStudySlice";
+import { Questions } from "../../redux/api/types";
+import { ShowConfirmIncorrect } from "./IncorrectAnswer";
+import { setScore } from "../../redux/features/quizzesSlice";
 
-const FillOutQuestionCard = () => {
-  const { questions } = useAppSelector((state) => state.caseStudySlice);
-  const { word, options } = questions[0];
+type Props = {
+  questions: Questions;
+  fetchNextQuestion: () => void;
+};
+
+const FillOutQuestionCard = ({ questions, fetchNextQuestion }: Props) => {
+  const { word, options } = questions;
   const [keyOpt, setKeyOpt] = useState<{ id: number; value: string }[]>([]);
   const [answer, setAnswer] = useState<{ id: number; value: string }[]>([]);
   const dispatch = useAppDispatch();
+  const score = useAppSelector((state) => state.quizSlice.score);
 
   useEffect(() => {
     setKeyOpt(options.map((e, i) => ({ id: i, value: e })));
@@ -97,12 +100,11 @@ const FillOutQuestionCard = () => {
               if (checkAnswer === word.word) {
                 toast.success("Correct answer");
                 handleSpeak(word.word);
-                dispatch(removeQuestion());
+                dispatch(setScore(score + 10));
+                fetchNextQuestion();
               } else {
-                toast.error("incorrect answer");
                 handleSpeak("incorrect");
-                dispatch(pushWord(word));
-                dispatch(swapQuestion());
+                ShowConfirmIncorrect({ score, dispatch, fetchNextQuestion });
               }
             }}
           >

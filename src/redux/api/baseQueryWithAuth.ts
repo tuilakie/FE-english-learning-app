@@ -75,5 +75,12 @@ export const baseQueryWithReauth: BaseQueryFn<
       }
     }
   }
+  if (result.error && result.error.status !== 403) {
+    message.error(
+      (result.error?.data as any).message || "Something went wrong.",
+      3
+    );
+  }
+
   return result;
 };

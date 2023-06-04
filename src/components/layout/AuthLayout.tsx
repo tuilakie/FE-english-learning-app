@@ -12,24 +12,7 @@ import { useLocation, NavLink } from "react-router-dom";
 import UserMenu from "./UserMenu";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const items: MenuProps["items"] = [
-  {
-    key: "/",
-    label: <NavLink to="/">Dashboard</NavLink>,
-    icon: <HomeOutlined />,
-  },
-  {
-    key: "quizzes",
-    label: <NavLink to="/quizzes">Quizzes</NavLink>,
-    icon: <QuestionOutlined />,
-  },
-  {
-    key: "profile",
-    label: <NavLink to="/profile">Profile</NavLink>,
-    icon: <UserOutlined />,
-  },
-];
+import { useAppSelector } from "../../redux/hook";
 
 export const AuthLayout = () => {
   const [current, setCurrent] = useState("/");
@@ -39,11 +22,43 @@ export const AuthLayout = () => {
     setCurrent(e.key);
   };
 
+  const { Courses } = useAppSelector((state) => state.quizSlice);
+
+  let children = [] as MenuProps["items"];
+
+  if (Courses) {
+    children = Courses.map((course) => {
+      return {
+        key: course.name,
+        label: <NavLink to={`/quizzes/${course.id}`}>{course.name}</NavLink>,
+      };
+    });
+  }
+
+  const items: MenuProps["items"] = [
+    {
+      key: "/",
+      label: <NavLink to="/">Dashboard</NavLink>,
+      icon: <HomeOutlined />,
+    },
+    {
+      key: "quizzes",
+      label: "Quizzes",
+      icon: <QuestionOutlined />,
+      children: children,
+    },
+    {
+      key: "profile",
+      label: <NavLink to="/profile">Profile</NavLink>,
+      icon: <UserOutlined />,
+    },
+  ];
+
   return (
     <Layout>
       <ToastContainer
         position="top-center"
-        autoClose={2000}
+        autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

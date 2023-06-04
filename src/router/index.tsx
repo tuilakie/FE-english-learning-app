@@ -8,11 +8,13 @@ import CoursePage from "../components/courses/CoursePage";
 import LevelList from "../components/courses/LevelList";
 import LevelPage from "../components/levels/LevelPage";
 import LearningPage from "../components/learning/LearningPage";
+import QuizzPage from "../components/quizzes/QuizzPage";
+import ErrorPage from "../components/layout/ErrorPage";
 
 const router = createBrowserRouter([
   {
     element: <AuthLayout />,
-    errorElement: <h1>Not Found</h1>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/login",
@@ -30,8 +32,8 @@ const router = createBrowserRouter([
             element: <Dashboard />,
           },
           {
-            path: "/quizzes",
-            element: <h1>Quizzes</h1>,
+            path: "/quizzes/:courseId/",
+            element: <QuizzPage />,
           },
           {
             path: "/profile",

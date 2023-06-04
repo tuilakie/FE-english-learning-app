@@ -2,9 +2,18 @@ import { Space } from "antd";
 import CourseCard from "./CourseCard";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useCoursesQuery } from "../../redux/api/courseApi";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../redux/hook";
+import { setCourses } from "../../redux/features/quizzesSlice";
 
 const Dashboard = () => {
   const { data, isLoading, isFetching, isError } = useCoursesQuery();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setCourses(data || []));
+  }, [data, dispatch]);
 
   if (isError) return <div>error</div>;
 

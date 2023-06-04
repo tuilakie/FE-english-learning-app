@@ -41,7 +41,11 @@ const CaseStudies = () => {
       }
       if (questions[0]._type === "select_meaning") {
         toast.info(answers?.meaning);
-        handleSpeak(answers?.meaning);
+        handleSpeak(
+          answers?.meaning.length < 40
+            ? answers?.meaning
+            : answers?.meaning.slice(0, 40)
+        );
       }
     }
     dispatch(swapQuestion());

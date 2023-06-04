@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { CaseStudies } from "./types";
+import { CaseStudies, Questions } from "./types";
 
 export const wordApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -59,6 +59,13 @@ export const wordApi = baseApi.injectEndpoints({
         { type: "Words", id: "LIST" },
       ],
     }),
+
+    getQuestion: builder.query<Questions, string>({
+      query: (courseId) => ({
+        url: `word/quizzes?courseId=${courseId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -67,4 +74,5 @@ export const {
   useResetLearnedMutation,
   useCaseStudiesQuery,
   useSaveProgressMutation,
+  useGetQuestionQuery,
 } = wordApi;
