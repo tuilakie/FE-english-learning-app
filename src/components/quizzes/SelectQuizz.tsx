@@ -1,4 +1,4 @@
-import { Button, Card, Modal, Typography } from "antd";
+import { Card, Typography } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { handleSpeak } from "../learning/handleSpeak";

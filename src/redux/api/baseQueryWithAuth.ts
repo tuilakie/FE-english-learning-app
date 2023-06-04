@@ -10,8 +10,10 @@ import { Mutex } from "async-mutex";
 
 const mutex = new Mutex();
 
+const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:4000/api/";
+
 export const baseQueryWithAuth = fetchBaseQuery({
-  baseUrl: "http://localhost:4000/api/",
+  baseUrl: baseUrl,
   prepareHeaders: (headers) => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
